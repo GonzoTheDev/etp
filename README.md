@@ -27,17 +27,14 @@ helm install webapp ./webapp-chart --set serviceMonitor.enabled=true --set grafa
 # 6. Install Chaos Mesh (optional)
 helm repo add chaos-mesh https://charts.chaos-mesh.org
 kubectl create namespace chaos-mesh
-helm install chaos-mesh chaos-mesh/chaos-mesh -n chaos-mesh \
-  --set chaosDaemon.runtime=containerd \
-  --set chaosDaemon.socketPath=/run/containerd/containerd.sock \
-  --set dashboard.create=true
-kubectl patch svc chaos-dashboard -n chaos-mesh -p '{"spec": {"type": "LoadBalancer"}}'
+helm install chaos-mesh chaos-mesh/chaos-mesh -n chaos-mesh --set chaosDaemon.runtime=containerd --set chaosDaemon.socketPath=/run/containerd/containerd.sock --set dashboard.create=true
+kubectl -n chaos-mesh port-forward svc/chaos-dashboard 2333:2333
 
 # 7. Configure RBAC for Chaos Dashboard
 kubectl apply -f chaos-mesh-rbac.yaml
 
 # 8. Get the access token for Chaos Dashboard
-kubectl describe secret chaos-mesh-viewer-token -n default | grep "token:" | awk '{print $2}'
+kubectl get secret chaos-mesh-viewer-token -n default -o jsonpath="{.data.token}" | %{ [System.Text.Encoding]::UTF8.GetString([System.Convert]::FromBase64String($_)) }
 # Copy this token - you'll need it to access the Chaos Dashboard
 ```
 
