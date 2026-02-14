@@ -113,9 +113,7 @@ kubectl create namespace monitoring
 ### 3. Install kube-prometheus-stack
 
 ```bash
-helm install monitoring prometheus-community/kube-prometheus-stack \
-  -f monitoring-values.yaml \
-  -n monitoring
+helm install monitoring prometheus-community/kube-prometheus-stack -f monitoring-values.yaml -n monitoring
 ```
 
 ### 4. Wait for All Pods to be Ready
