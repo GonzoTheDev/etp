@@ -84,13 +84,13 @@ kubectl top nodes
 kubectl apply -f hpa.yaml
 
 # Start observer – HPA governs, AI predictions are logged only
-python3 main.py --mode hpa_only --duration 30 --interval 30
+python main.py --mode hpa_only --duration 30 --interval 30
 
 # Terminal 2: inject CPU stress mid-experiment
-python3 cpu_stressor.py --workers 4 --duration 180
+python cpu_stressor.py --workers 4 --duration 180
 
 # Terminal 3: inject memory stress
-python3 memory_stressor.py --mb 55 --duration 180
+python memory_stressor.py --mb 55 --duration 180
 
 ```
 
@@ -98,19 +98,19 @@ python3 memory_stressor.py --mb 55 --duration 180
 
 ```bash
 # AI takes over (HPA is removed automatically)
-python3 main.py --mode ai_scaler --duration 30 --interval 30
+python main.py --mode ai_scaler --duration 30 --interval 30
 
 # Terminal 2: inject CPU stress mid-experiment
-python3 cpu_stressor.py --workers 4 --duration 180
+python cpu_stressor.py --workers 4 --duration 180
 
 # Terminal 3: inject memory stress
-python3 memory_stressor.py --mb 55 --duration 180
+python memory_stressor.py --mb 55 --duration 180
 ```
 
 #### Phase C – Side-by-side comparison (observation only)
 
 ```bash
-python3 main.py --mode comparison --duration 60 --interval 30
+python main.py --mode comparison --duration 60 --interval 30
 ```
 
 ### 5. Analyse results
